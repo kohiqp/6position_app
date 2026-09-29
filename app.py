@@ -7,7 +7,6 @@ Created on Thu Sep 24 00:26:58 2026
 
 import streamlit as st
 import yfinance as yf
-import talib as ta
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -73,8 +72,8 @@ def get_position2_stocks(stock_list, df_master):
             df.columns = df.columns.droplevel(1)
             close = df["Close"].squeeze()
 
-            df["ma5"] = ta.SMA(close, timeperiod=5)
-            df["ma25"] = ta.SMA(close, timeperiod=25)
+            df["ma5"] = close.rolling(5).mean()
+            df["ma25"] = close.rolling(25).mean()
 
             recent = df.tail(5)
 
@@ -175,8 +174,8 @@ def plot_6_positions(code):
     df.columns = df.columns.droplevel(1)
     close = df["Close"].squeeze()
 
-    df["ma5"] = ta.SMA(close, timeperiod=5)
-    df["ma25"] = ta.SMA(close, timeperiod=25)
+    df["ma5"] = close.rolling(5).mean()
+    df["ma25"] = close.rolling(25).mean()
 
     df = calc_positions(df)
 
