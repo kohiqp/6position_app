@@ -2,4 +2,3 @@ streamlit
 yfinance
 pandas
 plotly
-ta-lib-bin
