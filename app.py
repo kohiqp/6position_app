@@ -178,8 +178,12 @@ def plot_6_positions(code):
     df.columns = df.columns.droplevel(1)
     close = df["Close"].squeeze()
 
-    df["ma5"] = close.rolling(5).mean()
-    df["ma25"] = close.rolling(25).mean()
+    #df["ma5"] = close.rolling(5).mean()
+    #df["ma25"] = close.rolling(25).mean()
+
+    #週足に変更
+    df["ma5"] = close.rolling(25).mean()
+    df["ma25"] = close.rolling(65).mean()
 
     df = calc_positions(df)
 
