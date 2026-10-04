@@ -72,9 +72,13 @@ def get_position2_stocks(stock_list, df_master):
             df.columns = df.columns.droplevel(1)
             close = df["Close"].squeeze()
 
-            df["ma5"] = close.rolling(5).mean()
-            df["ma25"] = close.rolling(25).mean()
+            #df["ma5"] = close.rolling(5).mean()
+            #df["ma25"] = close.rolling(25).mean()
 
+            #週足に変更
+            df["ma5"] = close.rolling(25).mean()
+            df["ma25"] = close.rolling(65).mean()
+            
             recent = df.tail(5)
 
             pos2_day_close = None
