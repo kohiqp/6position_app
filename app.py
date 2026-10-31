@@ -32,6 +32,10 @@ def load_stock_list(csv_path):
 # =========================================================
 def calc_bollinger(df):
 
+    close = df["Close"].squeeze()
+
+    df["middle"] = close.rolling(BB_PERIOD).mean()
+
     df["std"] = close.rolling(BB_PERIOD).std()
 
     df["upper"] = (
@@ -120,8 +124,8 @@ def get_bollinger_break_stocks(stock_list, df_master):
                         "sigma": round(float(sigma), 2)
                     })
 
-        except Exception:
-            pass
+        except Exception as e:
+            st.write(code, e)
 
     results = sorted(
         results,
