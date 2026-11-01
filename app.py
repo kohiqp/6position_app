@@ -129,7 +129,7 @@ def get_bollinger_break_stocks(stock_list, df_master):
 
     results = sorted(
         results,
-        key=lambda x: abs(x["sigma"]),
+        key=lambda x: x["sigma"],
         reverse=True
     )
 
@@ -304,10 +304,25 @@ if "stock_list" in st.session_state:
                 "### 直近2営業日で±2σ突破した銘柄"
             )
 
-            st.dataframe(
-                bb_df,
-                use_container_width=True
-            )
+            #日付ごとに表を表示
+            for target_date in sorted(
+                bb_df["date"].unique(),
+                reverse=True
+            ):
+
+                st.write(f"### 📅 {target_date}")
+
+                day_df = bb_df[
+                    bb_df["date"] == target_date
+                ].sort_values(
+                    "sigma",
+                    ascending=False
+                )
+
+                st.dataframe(
+                    day_df,
+                    use_container_width=True
+                )
 
             st.write("### 一覧")
 
@@ -361,7 +376,22 @@ if "stock_list" in st.session_state:
 
         st.write("### ±2σ突破銘柄（保持）")
 
-        st.dataframe(
-            st.session_state["bb"],
-            use_container_width=True
-        )
+        bb_df = st.session_state["bb"]
+
+        for target_date in sorted(
+            bb_df["date"].unique(),
+            reverse=True
+        ):
+
+            st.write(f"#### 📅 {target_date}")
+
+            day_df = (
+                bb_df[bb_df["date"] == target_date]
+                .sort_values("sigma", ascending=False)
+                .drop(columns=["date"])
+            )
+
+            st.dataframe(
+                day_df,
+                use_container_width=True
+            )
